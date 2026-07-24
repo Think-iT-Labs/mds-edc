@@ -412,6 +412,70 @@ paths:
           description: Request body was malformed
       tags:
       - Contract Negotiation V3
+  /v3/contractnegotiations/request:
+    post:
+      deprecated: true
+      description: Returns all contract negotiations according to a query
+      operationId: queryNegotiationsV3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuerySpec"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ContractNegotiation"
+                type: array
+          description: The contract negotiations that match the query
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+                type: array
+          description: Request was malformed
+      tags:
+      - Contract Negotiation V3
+  /v4/contractnegotiations/{id}/state:
+    get:
+      description: Gets the state of a contract negotiation with the given ID
+      operationId: getNegotiationStateV4
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NegotiationState"
+          description: The contract negotiation's state
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/api-error-schema"
+                type: array
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/api-error-schema"
+                type: array
+          description: An contract negotiation with the given ID does not exist
+      tags:
+      - Contract Negotiation v4
   /v3/edrs/{transferProcessId}/dataaddress:
     get:
       deprecated: true
@@ -514,70 +578,6 @@ paths:
           description: An contract agreement with the given ID does not exist
       tags:
       - Contract Agreement V3
-  /v3/contractnegotiations/request:
-    post:
-      deprecated: true
-      description: Returns all contract negotiations according to a query
-      operationId: queryNegotiationsV3
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/QuerySpec"
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ContractNegotiation"
-                type: array
-          description: The contract negotiations that match the query
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ApiErrorDetail"
-                type: array
-          description: Request was malformed
-      tags:
-      - Contract Negotiation V3
-  /v4/contractnegotiations/{id}/state:
-    get:
-      description: Gets the state of a contract negotiation with the given ID
-      operationId: getNegotiationStateV4
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NegotiationState"
-          description: The contract negotiation's state
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api-error-schema"
-                type: array
-          description: "Request was malformed, e.g. id was null"
-        "404":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api-error-schema"
-                type: array
-          description: An contract negotiation with the given ID does not exist
-      tags:
-      - Contract Negotiation v4
   /v4/contractnegotiations/request:
     post:
       description: Returns all contract negotiations according to a query
@@ -1096,6 +1096,34 @@ paths:
           description: Request body was malformed
       tags:
       - Contract Negotiation v4
+  /v4/policydefinitions/request:
+    post:
+      description: Returns all policy definitions according to a query
+      operationId: queryPolicyDefinitionsV4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/query-spec-schema"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/policy-definition-schema"
+                type: array
+          description: The policy definitions matching the query
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/api-error-schema"
+                type: array
+          description: Request was malformed
+      tags:
+      - Policy Definition v4
   /v3/assets:
     post:
       deprecated: true
@@ -1160,34 +1188,6 @@ paths:
           description: "Asset could not be updated, because it does not exist."
       tags:
       - Asset V3
-  /v4/policydefinitions/request:
-    post:
-      description: Returns all policy definitions according to a query
-      operationId: queryPolicyDefinitionsV4
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/query-spec-schema"
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/policy-definition-schema"
-                type: array
-          description: The policy definitions matching the query
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api-error-schema"
-                type: array
-          description: Request was malformed
-      tags:
-      - Policy Definition v4
   /check/health:
     get:
       description: Performs a liveness probe to determine whether the runtime is working
@@ -1202,42 +1202,6 @@ paths:
           description: The runtime is working properly.
       tags:
       - Application Observability
-  /v3/transferprocesses/{id}/state:
-    get:
-      deprecated: true
-      description: Gets the state of a transfer process with the given ID
-      operationId: getTransferProcessStateV3
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TransferStateV3"
-          description: The  transfer process's state
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ApiErrorDetail"
-                type: array
-          description: "Request was malformed, e.g. id was null"
-        "404":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ApiErrorDetail"
-                type: array
-          description: An  transfer process with the given ID does not exist
-      tags:
-      - Transfer Process V3
   /v4/contractdefinitions:
     post:
       description: Creates a new contract definition
@@ -1304,10 +1268,11 @@ paths:
           description: A contract definition with the given ID does not exist
       tags:
       - Contract Definition v4
-  /v3/contractnegotiations/{id}/reject:
-    post:
-      description: Reject a pending negotiation
-      operationId: rejectNegotiation
+  /v3/transferprocesses/{id}/state:
+    get:
+      deprecated: true
+      description: Gets the state of a transfer process with the given ID
+      operationId: getTransferProcessStateV3
       parameters:
       - in: path
         name: id
@@ -1315,12 +1280,30 @@ paths:
         schema:
           type: string
       responses:
-        default:
+        "200":
           content:
-            '*/*': {}
-          description: default response
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransferStateV3"
+          description: The  transfer process's state
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+                type: array
+          description: "Request was malformed, e.g. id was null"
+        "404":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+                type: array
+          description: An  transfer process with the given ID does not exist
       tags:
-      - Manual Negotiation Approval
+      - Transfer Process V3
   /v3/contractagreements/retirements/{agreementId}:
     delete:
       description: "Removes a contract agreement from the retired list, reactivating\
@@ -1348,6 +1331,37 @@ paths:
           description: Request body was malformed
       tags:
       - Agreements Retirement
+  /v3/contractnegotiations/{id}/reject:
+    post:
+      description: Reject a pending negotiation
+      operationId: rejectNegotiation
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          content:
+            '*/*': {}
+          description: default response
+      tags:
+      - Manual Negotiation Approval
+  /check/liveness:
+    get:
+      description: Performs a liveness probe to determine whether the runtime is working
+        properly.
+      operationId: getLiveness
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+          description: The runtime is working properly.
+      tags:
+      - Application Observability
   /v4/contractagreements/{id}/negotiation:
     get:
       description: Gets a contract negotiation with the given contract agreement ID
@@ -1383,20 +1397,6 @@ paths:
           description: An contract agreement with the given ID does not exist
       tags:
       - Contract Agreement v4
-  /check/liveness:
-    get:
-      description: Performs a liveness probe to determine whether the runtime is working
-        properly.
-      operationId: getLiveness
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/HealthStatus"
-          description: The runtime is working properly.
-      tags:
-      - Application Observability
   /check/readiness:
     get:
       description: Performs a readiness probe to determine whether the runtime is
@@ -1603,6 +1603,23 @@ paths:
           description: Gets contract offers (=catalog) of a single connector
       tags:
       - Catalog V3
+  /v4/catalog/dataset/request:
+    post:
+      operationId: getDatasetV4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/catalog-request-schema"
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/dataset-schema"
+          description: Gets single dataset from a connector
+      tags:
+      - Catalog v4
   /v3/transferprocesses/{id}/terminate:
     post:
       deprecated: true
@@ -1708,23 +1725,6 @@ paths:
             \ completed or terminated."
       tags:
       - Transfer Process v4
-  /v4/catalog/dataset/request:
-    post:
-      operationId: getDatasetV4
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/catalog-request-schema"
-      responses:
-        default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/dataset-schema"
-          description: Gets single dataset from a connector
-      tags:
-      - Catalog v4
   /v4/transferprocesses/{id}/state:
     get:
       description: Gets the state of a transfer process with the given ID
@@ -1760,6 +1760,39 @@ paths:
           description: An  transfer process with the given ID does not exist
       tags:
       - Transfer Process v4
+  /v3/policydefinitions/{id}/evaluationplan:
+    post:
+      deprecated: true
+      description: "Creates an execution plane for an existing Policy, If the Policy\
+        \ is not found, an error is reported"
+      operationId: createExecutionPlaneV3
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PolicyEvaluationPlanRequestSchemaV3"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PolicyEvaluationPlanSchemaV3"
+          description: Returns the evaluation plan
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorDetail"
+          description: "An evaluation plan could not be created, because the policy\
+            \ definition does not exists"
+      tags:
+      - Policy Definition v3
   /v4/transferprocesses/{id}/suspend:
     post:
       description: "Requests the suspension of a transfer process. Due to the asynchronous\
@@ -1811,66 +1844,6 @@ paths:
             \ completed or terminated."
       tags:
       - Transfer Process v4
-  /v3/policydefinitions/{id}/evaluationplan:
-    post:
-      deprecated: true
-      description: "Creates an execution plane for an existing Policy, If the Policy\
-        \ is not found, an error is reported"
-      operationId: createExecutionPlaneV3
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PolicyEvaluationPlanRequestSchemaV3"
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PolicyEvaluationPlanSchemaV3"
-          description: Returns the evaluation plan
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiErrorDetail"
-          description: "An evaluation plan could not be created, because the policy\
-            \ definition does not exists"
-      tags:
-      - Policy Definition v3
-  /v4/policydefinitions/{id}/validate:
-    post:
-      description: "Validates an existing Policy, If the Policy is not found, an error\
-        \ is reported"
-      operationId: validatePolicyDefinitionV4
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/policy-validation-result-schema"
-          description: Returns the validation result
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/api-error-schema"
-          description: "policy definition could not be validated, because it does\
-            \ not exists"
-      tags:
-      - Policy Definition v4
   /v3/contractnegotiations/{id}/terminate:
     post:
       deprecated: true
@@ -1911,6 +1884,33 @@ paths:
           description: A contract negotiation with the given ID does not exist
       tags:
       - Contract Negotiation V3
+  /v4/policydefinitions/{id}/validate:
+    post:
+      description: "Validates an existing Policy, If the Policy is not found, an error\
+        \ is reported"
+      operationId: validatePolicyDefinitionV4
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/policy-validation-result-schema"
+          description: Returns the validation result
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api-error-schema"
+          description: "policy definition could not be validated, because it does\
+            \ not exists"
+      tags:
+      - Policy Definition v4
   /v4/contractnegotiations/{id}:
     delete:
       description: Deletes the contract negotiation with the given ID. Only terminated
@@ -2092,6 +2092,34 @@ paths:
           description: Gets single dataset from a connector
       tags:
       - Catalog V3
+  /v4/contractdefinitions/request:
+    post:
+      description: Returns all contract definitions according to a query
+      operationId: queryContractDefinitionsV4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/query-spec-schema"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/contract-definition-schema"
+                type: array
+          description: The contract definitions matching the query
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/api-error-schema"
+                type: array
+          description: Request was malformed
+      tags:
+      - Contract Definition v4
   /v3/transferprocesses/request:
     post:
       deprecated: true
@@ -2121,34 +2149,30 @@ paths:
           description: Request was malformed
       tags:
       - Transfer Process V3
-  /v4/contractdefinitions/request:
+  /v3/contractagreements/retirements:
     post:
-      description: Returns all contract definitions according to a query
-      operationId: queryContractDefinitionsV4
+      description: Retires an active contract agreement.
+      operationId: retireAgreementV3
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/query-spec-schema"
+              $ref: "#/components/schemas/RetirementExample"
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/contract-definition-schema"
-                type: array
-          description: The contract definitions matching the query
+        "204":
+          description: The contract agreement was successfully retired
+        "409":
+          description: The contract agreement is already retired
         "400":
           content:
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/api-error-schema"
+                  $ref: "#/components/schemas/ApiErrorDetail_1"
                 type: array
-          description: Request was malformed
+          description: Request body was malformed
       tags:
-      - Contract Definition v4
+      - Agreements Retirement
   /v3/transferprocesses/{id}:
     get:
       deprecated: true
@@ -2185,30 +2209,6 @@ paths:
           description: A transfer process with the given ID does not exist
       tags:
       - Transfer Process V3
-  /v3/contractagreements/retirements:
-    post:
-      description: Retires an active contract agreement.
-      operationId: retireAgreementV3
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RetirementExample"
-      responses:
-        "204":
-          description: The contract agreement was successfully retired
-        "409":
-          description: The contract agreement is already retired
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ApiErrorDetail_1"
-                type: array
-          description: Request body was malformed
-      tags:
-      - Agreements Retirement
   /v4/contractnegotiations/{id}/agreement:
     get:
       description: Gets a contract agreement for a contract negotiation with the given
@@ -2380,6 +2380,43 @@ paths:
             \ definition does not exists"
       tags:
       - Policy Definition v4
+  /v3/policydefinitions:
+    post:
+      deprecated: true
+      description: Creates a new policy definition
+      operationId: createPolicyDefinitionV3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PolicyDefinitionInputV3"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: policy definition was created successfully. Returns the Policy
+            Definition Id and created timestamp
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+                type: array
+          description: Request body was malformed
+        "409":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+                type: array
+          description: "Could not create policy definition, because a contract definition\
+            \ with that ID already exists"
+      tags:
+      - Policy Definition v3
   /v3/transferprocesses/{id}/resume:
     post:
       deprecated: true
@@ -2418,43 +2455,6 @@ paths:
           description: A transfer process with the given ID does not exist
       tags:
       - Transfer Process V3
-  /v3/policydefinitions:
-    post:
-      deprecated: true
-      description: Creates a new policy definition
-      operationId: createPolicyDefinitionV3
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PolicyDefinitionInputV3"
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IdResponse"
-          description: policy definition was created successfully. Returns the Policy
-            Definition Id and created timestamp
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ApiErrorDetail"
-                type: array
-          description: Request body was malformed
-        "409":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ApiErrorDetail"
-                type: array
-          description: "Could not create policy definition, because a contract definition\
-            \ with that ID already exists"
-      tags:
-      - Policy Definition v3
   /v3/policydefinitions/{id}/validate:
     post:
       deprecated: true
@@ -2519,34 +2519,6 @@ paths:
           description: An contract agreement with the given ID does not exist
       tags:
       - Contract Agreement V3
-  /v4/transferprocesses/request:
-    post:
-      description: Returns all transfer process according to a query
-      operationId: queryTransferProcessesV4
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/query-spec-schema"
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/transfer-process-schema"
-                type: array
-          description: The transfer processes matching the query
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api-error-schema"
-                type: array
-          description: Request was malformed
-      tags:
-      - Transfer Process v4
   /v4/contractdefinitions/{id}:
     delete:
       description: "Removes a contract definition with the given ID if possible. DANGER\
@@ -2615,6 +2587,34 @@ paths:
           description: An contract agreement with the given ID does not exist
       tags:
       - Contract Definition v4
+  /v4/transferprocesses/request:
+    post:
+      description: Returns all transfer process according to a query
+      operationId: queryTransferProcessesV4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/query-spec-schema"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/transfer-process-schema"
+                type: array
+          description: The transfer processes matching the query
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/api-error-schema"
+                type: array
+          description: Request was malformed
+      tags:
+      - Transfer Process v4
   /v4/transferprocesses:
     post:
       description: "Initiates a data transfer with the given parameters. Due to the\
@@ -2650,6 +2650,22 @@ paths:
           description: Request body was malformed
       tags:
       - Transfer Process v4
+  /v4/dataplanes:
+    get:
+      description: Returns a list of all currently registered data plane instances
+      operationId: getAllDataPlaneInstancesV4
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/DataPlaneInstanceSchemaV4"
+                type: array
+          description: A (potentially empty) list of currently registered data plane
+            instances
+      tags:
+      - Dataplane Selector v4
   /v4/assets/request:
     post:
       description: Request all assets according to a particular query
@@ -2678,58 +2694,6 @@ paths:
           description: Request body was malformed
       tags:
       - Asset v4
-  /v4/dataplanes:
-    get:
-      description: Returns a list of all currently registered data plane instances
-      operationId: getAllDataPlaneInstancesV4
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/DataPlaneInstanceSchemaV4"
-                type: array
-          description: A (potentially empty) list of currently registered data plane
-            instances
-      tags:
-      - Dataplane Selector v4
-  /v3/transferprocesses:
-    post:
-      deprecated: true
-      description: "Initiates a data transfer with the given parameters. Due to the\
-        \ asynchronous nature of transfers, a successful response only indicates that\
-        \ the request was successfully received. This may take a long time, so clients\
-        \ must poll the /{id}/state endpoint to track the state."
-      operationId: initiateTransferProcessV3
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TransferRequestV3"
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IdResponse"
-          description: The transfer was successfully initiated. Returns the transfer
-            process ID and created timestamp
-          links:
-            poll-state:
-              operationId: getTransferProcessStateV3
-              parameters:
-                id: $response.body#/id
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ApiErrorDetail"
-                type: array
-          description: Request body was malformed
-      tags:
-      - Transfer Process V3
   /v3/contractnegotiations/{id}:
     delete:
       deprecated: true
@@ -2810,6 +2774,81 @@ paths:
           description: An contract negotiation with the given ID does not exist
       tags:
       - Contract Negotiation V3
+  /v3/transferprocesses:
+    post:
+      deprecated: true
+      description: "Initiates a data transfer with the given parameters. Due to the\
+        \ asynchronous nature of transfers, a successful response only indicates that\
+        \ the request was successfully received. This may take a long time, so clients\
+        \ must poll the /{id}/state endpoint to track the state."
+      operationId: initiateTransferProcessV3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransferRequestV3"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdResponse"
+          description: The transfer was successfully initiated. Returns the transfer
+            process ID and created timestamp
+          links:
+            poll-state:
+              operationId: getTransferProcessStateV3
+              parameters:
+                id: $response.body#/id
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ApiErrorDetail"
+                type: array
+          description: Request body was malformed
+      tags:
+      - Transfer Process V3
+  /v4/contractnegotiations/{id}/terminate:
+    post:
+      description: Terminates the contract negotiation.
+      operationId: terminateNegotiationV4
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/contract-terminate-schema"
+      responses:
+        "200":
+          description: ContractNegotiation is terminating
+          links:
+            poll-state:
+              operationId: getNegotiationStateV3
+        "400":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/api-error-schema"
+                type: array
+          description: Request was malformed
+        "404":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/api-error-schema"
+                type: array
+          description: A contract negotiation with the given ID does not exist
+      tags:
+      - Contract Negotiation v4
   /v4/assets:
     post:
       description: Creates a new asset together with a data address
@@ -2872,45 +2911,6 @@ paths:
           description: "Asset could not be updated, because it does not exist."
       tags:
       - Asset v4
-  /v4/contractnegotiations/{id}/terminate:
-    post:
-      description: Terminates the contract negotiation.
-      operationId: terminateNegotiationV4
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/contract-terminate-schema"
-      responses:
-        "200":
-          description: ContractNegotiation is terminating
-          links:
-            poll-state:
-              operationId: getNegotiationStateV3
-        "400":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api-error-schema"
-                type: array
-          description: Request was malformed
-        "404":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api-error-schema"
-                type: array
-          description: A contract negotiation with the given ID does not exist
-      tags:
-      - Contract Negotiation v4
   /v3/contractnegotiations/{id}/state:
     get:
       deprecated: true
@@ -2953,46 +2953,46 @@ components:
       allOf:
       - $ref: "#/components/schemas/TransferProcess"
       example:
-        stateTimestamp: 0
-        '@type': '@type'
-        type: CONSUMER
         '@context':
         - '@context'
         - '@context'
-        assetId: assetId
-        dataplaneMetadata:
-          '@type': '@type'
-          profiles:
-          - profiles
-          - profiles
-          properties:
-            key: value
-          labels:
-          - labels
-          - labels
+        '@type': '@type'
+        '@id': '@id'
+        type: CONSUMER
+        state: state
+        stateTimestamp: 0
         callbackAddresses:
-        - authKey: authKey
-          '@type': '@type'
-          authCodeId: authCodeId
-          uri: uri
+        - '@type': '@type'
           transactional: true
+          uri: uri
           events:
           - events
           - events
-        - authKey: authKey
-          '@type': '@type'
+          authKey: authKey
           authCodeId: authCodeId
-          uri: uri
+        - '@type': '@type'
           transactional: true
+          uri: uri
           events:
           - events
           - events
+          authKey: authKey
+          authCodeId: authCodeId
+        correlationId: correlationId
+        assetId: assetId
         contractId: contractId
         transferType: transferType
         errorDetail: errorDetail
-        correlationId: correlationId
-        '@id': '@id'
-        state: state
+        dataplaneMetadata:
+          '@type': '@type'
+          labels:
+          - labels
+          - labels
+          properties:
+            key: value
+          profiles:
+          - profiles
+          - profiles
       title: TransferProcessSchema
       type: object
     TransferProcess:
@@ -3000,6 +3000,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -3044,6 +3045,7 @@ components:
     context-schema:
       allOf:
       - $ref: "#/components/schemas/ContextSchema"
+      example: {}
       items:
         type: string
       title: ContextSchema
@@ -3058,14 +3060,14 @@ components:
       allOf:
       - $ref: "#/components/schemas/CallbackAddress"
       example:
-        authKey: authKey
         '@type': '@type'
-        authCodeId: authCodeId
-        uri: uri
         transactional: true
+        uri: uri
         events:
         - events
         - events
+        authKey: authKey
+        authCodeId: authCodeId
       title: CallbackAddressSchema
       type: object
     CallbackAddress:
@@ -3095,14 +3097,14 @@ components:
       - $ref: "#/components/schemas/DataplaneMetadata"
       example:
         '@type': '@type'
-        profiles:
-        - profiles
-        - profiles
-        properties:
-          key: value
         labels:
         - labels
         - labels
+        properties:
+          key: value
+        profiles:
+        - profiles
+        - profiles
       title: DataplaneMetadataSchema
       type: object
     DataplaneMetadata:
@@ -3128,9 +3130,9 @@ components:
       allOf:
       - $ref: "#/components/schemas/ApiError"
       example:
-        path: path
         message: message
         type: type
+        path: path
         invalidValue: invalidValue
       title: ApiErrorSchema
       type: object
@@ -3221,6 +3223,8 @@ components:
         sortField: fieldName
         filterExpression: []
       properties:
+        '@context':
+          type: object
         '@type':
           example: https://w3id.org/edc/v0.0.1/ns/QuerySpec
           type: string
@@ -3251,6 +3255,8 @@ components:
         operator: =
         operandRight: some value
       properties:
+        '@context':
+          type: object
         '@type':
           example: https://w3id.org/edc/v0.0.1/ns/Criterion
           type: string
@@ -3317,26 +3323,25 @@ components:
       allOf:
       - $ref: "#/components/schemas/IdResponse"
       example:
-        createdAt: 0.8008281904610115
-        '@type': '@type'
-        '@id': '@id'
         '@context':
         - '@context'
         - '@context'
+        '@type': '@type'
+        '@id': '@id'
+        createdAt: 0.8008281904610115
       title: IdResponseSchema
       type: object
     IdResponse:
       example:
-        createdAt: 0.8008281904610115
+        '@context': {}
         '@type': '@type'
         '@id': '@id'
-        '@context':
-        - '@context'
-        - '@context'
+        createdAt: 0.8008281904610115
       properties:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -3357,27 +3362,67 @@ components:
       allOf:
       - $ref: "#/components/schemas/PolicyDefinition"
       example:
+        '@context': {}
         '@type': '@type'
         '@id': '@id'
-        privateProperties:
-          privateKey: privateValue
-        '@context':
-        - '@context'
-        - '@context'
         policy:
           '@type': '@type'
-          obligation:
-          - action: null
-            constraint:
-            - null
-            - null
-          - action: null
-            constraint:
-            - null
-            - null
           profile:
           - PolicyClass_profile
           - PolicyClass_profile
+          permission:
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
           prohibition:
           - action: action
             constraint:
@@ -3387,59 +3432,17 @@ components:
             constraint:
             - null
             - null
-          permission:
-          - action: action
+          obligation:
+          - action: null
             constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          - action: action
+            - null
+            - null
+          - action: null
             constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
+            - null
+            - null
+        privateProperties:
+          privateKey: privateValue
       title: PolicyDefinitionSchema
       type: object
     PolicyDefinition:
@@ -3447,6 +3450,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -3469,18 +3473,62 @@ components:
     PolicyClass:
       example:
         '@type': '@type'
-        obligation:
-        - action: null
-          constraint:
-          - null
-          - null
-        - action: null
-          constraint:
-          - null
-          - null
         profile:
         - PolicyClass_profile
         - PolicyClass_profile
+        permission:
+        - action: action
+          constraint:
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+        - action: action
+          constraint:
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
         prohibition:
         - action: action
           constraint:
@@ -3490,59 +3538,15 @@ components:
           constraint:
           - null
           - null
-        permission:
-        - action: action
+        obligation:
+        - action: null
           constraint:
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-        - action: action
+          - null
+          - null
+        - action: null
           constraint:
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
+          - null
+          - null
       properties:
         '@type':
           type: string
@@ -3572,25 +3576,25 @@ components:
       example:
         action: action
         constraint:
-        - or:
+        - and:
           - null
           - null
           andSequence:
           - null
           - null
-          and:
+          or:
           - null
           - null
           xone:
           - null
           - null
-        - or:
+        - and:
           - null
           - null
           andSequence:
           - null
           - null
-          and:
+          or:
           - null
           - null
           xone:
@@ -3617,13 +3621,13 @@ components:
       type: object
     LogicalConstraint:
       example:
-        or:
+        and:
         - null
         - null
         andSequence:
         - null
         - null
-        and:
+        or:
         - null
         - null
         xone:
@@ -3718,25 +3722,25 @@ components:
       allOf:
       - $ref: "#/components/schemas/Asset"
       example:
-        '@type': '@type'
-        dataplaneMetadata:
-          '@type': '@type'
-          profiles:
-          - profiles
-          - profiles
-          properties:
-            key: value
-          labels:
-          - labels
-          - labels
-        '@id': '@id'
-        privateProperties:
-          privateKey: privateValue
         '@context':
         - '@context'
         - '@context'
+        '@type': '@type'
+        '@id': '@id'
         properties:
           key: value
+        privateProperties:
+          privateKey: privateValue
+        dataplaneMetadata:
+          '@type': '@type'
+          labels:
+          - labels
+          - labels
+          properties:
+            key: value
+          profiles:
+          - profiles
+          - profiles
       title: AssetSchema
       type: object
     Asset:
@@ -3744,6 +3748,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -3836,8 +3841,8 @@ components:
       allOf:
       - $ref: "#/components/schemas/RootCatalog"
       example:
-        participantId: participantId
         '@context': {}
+        participantId: participantId
       title: CatalogSchema
       type: object
     RootCatalog:
@@ -3845,7 +3850,7 @@ components:
       - $ref: "#/components/schemas/Catalog"
       - properties:
           '@context':
-            $ref: "#/components/schemas/context-schema_1"
+            $ref: "#/components/schemas/context-schema"
           participantId:
             type: string
         required:
@@ -3904,19 +3909,63 @@ components:
     Distribution:
       example:
         hasPolicy:
-        - obligation:
-          - action: null
-            constraint:
-            - null
-            - null
-          - action: null
-            constraint:
-            - null
-            - null
-          '@type': '@type'
+        - '@id': '@id'
           profile:
           - PolicyClass_profile
           - PolicyClass_profile
+          permission:
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
           prohibition:
           - action: action
             constraint:
@@ -3926,61 +3975,7 @@ components:
             constraint:
             - null
             - null
-          permission:
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          '@id': '@id'
-        - obligation:
+          obligation:
           - action: null
             constraint:
             - null
@@ -3990,9 +3985,63 @@ components:
             - null
             - null
           '@type': '@type'
+        - '@id': '@id'
           profile:
           - PolicyClass_profile
           - PolicyClass_profile
+          permission:
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
           prohibition:
           - action: action
             constraint:
@@ -4002,60 +4051,16 @@ components:
             constraint:
             - null
             - null
-          permission:
-          - action: action
+          obligation:
+          - action: null
             constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          - action: action
+            - null
+            - null
+          - action: null
             constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          '@id': '@id'
+            - null
+            - null
+          '@type': '@type'
         accessService: Distribution_accessService
         format: format
       properties:
@@ -4081,6 +4086,72 @@ components:
       - anyOf: []
         nullable: true
       example:
+        '@id': '@id'
+        profile:
+        - PolicyClass_profile
+        - PolicyClass_profile
+        permission:
+        - action: action
+          constraint:
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+        - action: action
+          constraint:
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+        prohibition:
+        - action: action
+          constraint:
+          - null
+          - null
+        - action: action
+          constraint:
+          - null
+          - null
         obligation:
         - action: null
           constraint:
@@ -4091,72 +4162,6 @@ components:
           - null
           - null
         '@type': '@type'
-        profile:
-        - PolicyClass_profile
-        - PolicyClass_profile
-        prohibition:
-        - action: action
-          constraint:
-          - null
-          - null
-        - action: action
-          constraint:
-          - null
-          - null
-        permission:
-        - action: action
-          constraint:
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-        - action: action
-          constraint:
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-        '@id': '@id'
       not:
         required:
         - target
@@ -4217,14 +4222,6 @@ components:
         example: null
       type: object
       example: null
-    context-schema_1:
-      allOf:
-      - $ref: "#/components/schemas/ContextSchema"
-      example: {}
-      items:
-        type: string
-      title: ContextSchema
-      type: array
     query-spec-schema:
       allOf:
       - $ref: "#/components/schemas/QuerySpecRoot"
@@ -4266,9 +4263,9 @@ components:
       type: object
     Criterion_1:
       example:
-        operandRight: ""
         '@type': '@type'
         operandLeft: operandLeft
+        operandRight: ""
         operator: operator
       properties:
         '@type':
@@ -4296,6 +4293,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -4331,6 +4329,8 @@ components:
         '@id': id-value
         createdAt: 1688465655
       properties:
+        '@context':
+          type: object
         '@id':
           type: string
         createdAt:
@@ -4428,6 +4428,76 @@ components:
       - assigner
       - target
       type: object
+    ContractNegotiation:
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@type': https://w3id.org/edc/v0.0.1/ns/ContractNegotiation
+        '@id': negotiation-id
+        type: PROVIDER
+        protocol: dataspace-protocol-http:2025-1
+        counterPartyId: counter-party-id
+        counterPartyAddress: http://counter/party/address
+        state: VERIFIED
+        contractAgreementId: contract:agreement:id
+        errorDetail: eventual-error-detail
+        createdAt: 1688465655
+        callbackAddresses:
+        - transactional: false
+          uri: http://callback/url
+          events:
+          - contract.negotiation
+          - transfer.process
+          authKey: auth-key
+          authCodeId: auth-code-id
+      properties:
+        '@id':
+          type: string
+        '@type':
+          example: https://w3id.org/edc/v0.0.1/ns/ContractNegotiation
+          type: string
+        callbackAddresses:
+          items:
+            $ref: "#/components/schemas/CallbackAddress_1"
+          type: array
+        contractAgreementId:
+          type: string
+        counterPartyAddress:
+          type: string
+        counterPartyId:
+          type: string
+        errorDetail:
+          type: string
+        protocol:
+          type: string
+        state:
+          type: string
+        type:
+          enum:
+          - CONSUMER
+          - PROVIDER
+          type: string
+      type: object
+    NegotiationState:
+      example:
+        '@context': {}
+        state: state
+      properties:
+        '@context':
+          allOf:
+          - $ref: "#/components/schemas/ContextSchema"
+          example: {}
+          items:
+            type: string
+          title: ContextSchema
+          type: array
+        state:
+          type: string
+      required:
+      - '@context'
+      - '@type'
+      - state
+      type: object
     ContractDefinitionOutputV3:
       example:
         '@context':
@@ -4505,115 +4575,42 @@ components:
         providerId:
           type: string
       type: object
-    ContractNegotiation:
-      example:
-        '@context':
-          '@vocab': https://w3id.org/edc/v0.0.1/ns/
-        '@type': https://w3id.org/edc/v0.0.1/ns/ContractNegotiation
-        '@id': negotiation-id
-        type: PROVIDER
-        protocol: dataspace-protocol-http:2025-1
-        counterPartyId: counter-party-id
-        counterPartyAddress: http://counter/party/address
-        state: VERIFIED
-        contractAgreementId: contract:agreement:id
-        errorDetail: eventual-error-detail
-        createdAt: 1688465655
-        callbackAddresses:
-        - transactional: false
-          uri: http://callback/url
-          events:
-          - contract.negotiation
-          - transfer.process
-          authKey: auth-key
-          authCodeId: auth-code-id
-      properties:
-        '@id':
-          type: string
-        '@type':
-          example: https://w3id.org/edc/v0.0.1/ns/ContractNegotiation
-          type: string
-        callbackAddresses:
-          items:
-            $ref: "#/components/schemas/CallbackAddress_1"
-          type: array
-        contractAgreementId:
-          type: string
-        counterPartyAddress:
-          type: string
-        counterPartyId:
-          type: string
-        errorDetail:
-          type: string
-        protocol:
-          type: string
-        state:
-          type: string
-        type:
-          enum:
-          - CONSUMER
-          - PROVIDER
-          type: string
-      type: object
-    NegotiationState:
-      example:
-        state: state
-        '@context':
-        - '@context'
-        - '@context'
-      properties:
-        '@context':
-          allOf:
-          - $ref: "#/components/schemas/ContextSchema"
-          items:
-            type: string
-          title: ContextSchema
-          type: array
-        state:
-          type: string
-      required:
-      - '@context'
-      - '@type'
-      - state
-      type: object
     contract-negotiation-schema:
       allOf:
       - $ref: "#/components/schemas/ContractNegotiation_1"
       example:
-        stateTimestamp: 0
+        '@context': {}
         '@type': '@type'
-        profile: profile
-        counterPartyId: counterPartyId
-        type: CONSUMER
-        '@context':
-        - '@context'
-        - '@context'
-        counterPartyAddress: counterPartyAddress
-        createdAt: 6
-        protocol: protocol
-        assetId: assetId
-        callbackAddresses:
-        - authKey: authKey
-          '@type': '@type'
-          authCodeId: authCodeId
-          uri: uri
-          transactional: true
-          events:
-          - events
-          - events
-        - authKey: authKey
-          '@type': '@type'
-          authCodeId: authCodeId
-          uri: uri
-          transactional: true
-          events:
-          - events
-          - events
-        errorDetail: errorDetail
-        contractAgreementId: contractAgreementId
-        correlationId: correlationId
         '@id': '@id'
+        type: CONSUMER
         state: state
+        stateTimestamp: 0
+        protocol: protocol
+        profile: profile
+        createdAt: 6
+        callbackAddresses:
+        - '@type': '@type'
+          transactional: true
+          uri: uri
+          events:
+          - events
+          - events
+          authKey: authKey
+          authCodeId: authCodeId
+        - '@type': '@type'
+          transactional: true
+          uri: uri
+          events:
+          - events
+          - events
+          authKey: authKey
+          authCodeId: authCodeId
+        counterPartyAddress: counterPartyAddress
+        counterPartyId: counterPartyId
+        errorDetail: errorDetail
+        correlationId: correlationId
+        assetId: assetId
+        contractAgreementId: contractAgreementId
       title: ContractNegotiationSchema
       type: object
     ContractNegotiation_1:
@@ -4621,6 +4618,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -4674,9 +4672,9 @@ components:
       type: object
     ApiErrorDetail_1:
       example:
-        path: path
         message: message
         type: type
+        path: path
         invalidValue: "{}"
       properties:
         message:
@@ -4735,16 +4733,80 @@ components:
       allOf:
       - $ref: "#/components/schemas/ContractAgreement_2"
       example:
-        contractSigningDate: 0
+        '@context': {}
         '@type': '@type'
+        '@id': '@id'
         assetId: assetId
         providerId: providerId
         consumerId: consumerId
-        '@id': '@id'
-        '@context':
-        - '@context'
-        - '@context'
+        contractSigningDate: 0
         policy:
+          '@id': '@id'
+          profile:
+          - PolicyClass_profile
+          - PolicyClass_profile
+          permission:
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          prohibition:
+          - action: action
+            constraint:
+            - null
+            - null
+          - action: action
+            constraint:
+            - null
+            - null
           obligation:
           - action: null
             constraint:
@@ -4755,75 +4817,9 @@ components:
             - null
             - null
           '@type': '@type'
-          profile:
-          - PolicyClass_profile
-          - PolicyClass_profile
-          assigner: assigner
-          prohibition:
-          - action: action
-            constraint:
-            - null
-            - null
-          - action: action
-            constraint:
-            - null
-            - null
-          permission:
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          '@id': '@id'
-          assignee: assignee
           target: target
+          assigner: assigner
+          assignee: assignee
           timestamp: timestamp
       title: ContractAgreementSchema
       type: object
@@ -4832,6 +4828,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -4879,6 +4876,72 @@ components:
       - anyOf: []
         nullable: true
       example:
+        '@id': '@id'
+        profile:
+        - PolicyClass_profile
+        - PolicyClass_profile
+        permission:
+        - action: action
+          constraint:
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+        - action: action
+          constraint:
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+          - and:
+            - null
+            - null
+            andSequence:
+            - null
+            - null
+            or:
+            - null
+            - null
+            xone:
+            - null
+            - null
+        prohibition:
+        - action: action
+          constraint:
+          - null
+          - null
+        - action: action
+          constraint:
+          - null
+          - null
         obligation:
         - action: null
           constraint:
@@ -4889,75 +4952,9 @@ components:
           - null
           - null
         '@type': '@type'
-        profile:
-        - PolicyClass_profile
-        - PolicyClass_profile
-        assigner: assigner
-        prohibition:
-        - action: action
-          constraint:
-          - null
-          - null
-        - action: action
-          constraint:
-          - null
-          - null
-        permission:
-        - action: action
-          constraint:
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-        - action: action
-          constraint:
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-          - or:
-            - null
-            - null
-            andSequence:
-            - null
-            - null
-            and:
-            - null
-            - null
-            xone:
-            - null
-            - null
-        '@id': '@id'
-        assignee: assignee
         target: target
+        assigner: assigner
+        assignee: assignee
         timestamp: timestamp
       required:
       - '@type'
@@ -5009,7 +5006,6 @@ components:
       type: object
     HealthStatus:
       example:
-        isSystemHealthy: true
         componentResults:
         - component: component
           failure:
@@ -5025,6 +5021,7 @@ components:
             - messages
             - messages
           isHealthy: true
+        isSystemHealthy: true
       properties:
         componentResults:
           items:
@@ -5076,6 +5073,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -5163,40 +5161,25 @@ components:
       - dataAddress
       - properties
       type: object
-    TransferStateV3:
-      example:
-        '@context':
-          '@vocab': https://w3id.org/edc/v0.0.1/ns/
-        '@type': https://w3id.org/edc/v0.0.1/ns/TransferState
-        state: STARTED
-      properties:
-        '@type':
-          example: https://w3id.org/edc/v0.0.1/ns/TransferState
-          type: string
-        state:
-          type: string
-      type: object
     contract-definition-schema:
       allOf:
       - $ref: "#/components/schemas/ContractDefinition"
       example:
-        accessPolicyId: accessPolicyId
-        assetsSelector:
-        - operandRight: ""
-          '@type': '@type'
-          operandLeft: operandLeft
-          operator: operator
-        - operandRight: ""
-          '@type': '@type'
-          operandLeft: operandLeft
-          operator: operator
+        '@context': {}
         '@type': '@type'
-        contractPolicyId: contractPolicyId
         '@id': '@id'
+        accessPolicyId: accessPolicyId
+        contractPolicyId: contractPolicyId
         privateProperties: "{}"
-        '@context':
-        - '@context'
-        - '@context'
+        assetsSelector:
+        - '@type': '@type'
+          operandLeft: operandLeft
+          operandRight: ""
+          operator: operator
+        - '@type': '@type'
+          operandLeft: operandLeft
+          operandRight: ""
+          operator: operator
       title: ContractDefinitionSchema
       type: object
     ContractDefinition:
@@ -5204,6 +5187,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -5227,6 +5211,19 @@ components:
       - '@type'
       - accessPolicyId
       - contractPolicyId
+      type: object
+    TransferStateV3:
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@type': https://w3id.org/edc/v0.0.1/ns/TransferState
+        state: STARTED
+      properties:
+        '@type':
+          example: https://w3id.org/edc/v0.0.1/ns/TransferState
+          type: string
+        state:
+          type: string
       type: object
     PolicyDefinitionInputV3:
       example:
@@ -5333,6 +5330,490 @@ components:
       - counterPartyAddress
       - protocol
       type: object
+    dataset-schema:
+      allOf:
+      - $ref: "#/components/schemas/RootDataset"
+      example:
+        '@id': '@id'
+        distribution:
+        - hasPolicy:
+          - '@id': '@id'
+            profile:
+            - PolicyClass_profile
+            - PolicyClass_profile
+            permission:
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            prohibition:
+            - action: action
+              constraint:
+              - null
+              - null
+            - action: action
+              constraint:
+              - null
+              - null
+            obligation:
+            - action: null
+              constraint:
+              - null
+              - null
+            - action: null
+              constraint:
+              - null
+              - null
+            '@type': '@type'
+          - '@id': '@id'
+            profile:
+            - PolicyClass_profile
+            - PolicyClass_profile
+            permission:
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            prohibition:
+            - action: action
+              constraint:
+              - null
+              - null
+            - action: action
+              constraint:
+              - null
+              - null
+            obligation:
+            - action: null
+              constraint:
+              - null
+              - null
+            - action: null
+              constraint:
+              - null
+              - null
+            '@type': '@type'
+          accessService: Distribution_accessService
+          format: format
+        - hasPolicy:
+          - '@id': '@id'
+            profile:
+            - PolicyClass_profile
+            - PolicyClass_profile
+            permission:
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            prohibition:
+            - action: action
+              constraint:
+              - null
+              - null
+            - action: action
+              constraint:
+              - null
+              - null
+            obligation:
+            - action: null
+              constraint:
+              - null
+              - null
+            - action: null
+              constraint:
+              - null
+              - null
+            '@type': '@type'
+          - '@id': '@id'
+            profile:
+            - PolicyClass_profile
+            - PolicyClass_profile
+            permission:
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            - action: action
+              constraint:
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+              - and:
+                - null
+                - null
+                andSequence:
+                - null
+                - null
+                or:
+                - null
+                - null
+                xone:
+                - null
+                - null
+            prohibition:
+            - action: action
+              constraint:
+              - null
+              - null
+            - action: action
+              constraint:
+              - null
+              - null
+            obligation:
+            - action: null
+              constraint:
+              - null
+              - null
+            - action: null
+              constraint:
+              - null
+              - null
+            '@type': '@type'
+          accessService: Distribution_accessService
+          format: format
+        hasPolicy:
+        - '@id': '@id'
+          profile:
+          - PolicyClass_profile
+          - PolicyClass_profile
+          permission:
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          prohibition:
+          - action: action
+            constraint:
+            - null
+            - null
+          - action: action
+            constraint:
+            - null
+            - null
+          obligation:
+          - action: null
+            constraint:
+            - null
+            - null
+          - action: null
+            constraint:
+            - null
+            - null
+          '@type': '@type'
+        - '@id': '@id'
+          profile:
+          - PolicyClass_profile
+          - PolicyClass_profile
+          permission:
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          - action: action
+            constraint:
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+            - and:
+              - null
+              - null
+              andSequence:
+              - null
+              - null
+              or:
+              - null
+              - null
+              xone:
+              - null
+              - null
+          prohibition:
+          - action: action
+            constraint:
+            - null
+            - null
+          - action: action
+            constraint:
+            - null
+            - null
+          obligation:
+          - action: null
+            constraint:
+            - null
+            - null
+          - action: null
+            constraint:
+            - null
+            - null
+          '@type': '@type'
+        '@context': {}
+      title: DatasetSchema
+      type: object
+    RootDataset:
+      allOf:
+      - $ref: "#/components/schemas/Dataset"
+      - properties:
+          '@context':
+            $ref: "#/components/schemas/context-schema"
+        required:
+        - '@context'
+        type: object
+        example: null
+      type: object
+      example: null
     TerminateTransferV3:
       example:
         '@context':
@@ -5356,6 +5837,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -5368,500 +5850,15 @@ components:
       - '@context'
       - '@type'
       type: object
-    dataset-schema:
-      allOf:
-      - $ref: "#/components/schemas/RootDataset"
-      example:
-        hasPolicy:
-        - obligation:
-          - action: null
-            constraint:
-            - null
-            - null
-          - action: null
-            constraint:
-            - null
-            - null
-          '@type': '@type'
-          profile:
-          - PolicyClass_profile
-          - PolicyClass_profile
-          prohibition:
-          - action: action
-            constraint:
-            - null
-            - null
-          - action: action
-            constraint:
-            - null
-            - null
-          permission:
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          '@id': '@id'
-        - obligation:
-          - action: null
-            constraint:
-            - null
-            - null
-          - action: null
-            constraint:
-            - null
-            - null
-          '@type': '@type'
-          profile:
-          - PolicyClass_profile
-          - PolicyClass_profile
-          prohibition:
-          - action: action
-            constraint:
-            - null
-            - null
-          - action: action
-            constraint:
-            - null
-            - null
-          permission:
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          - action: action
-            constraint:
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-            - or:
-              - null
-              - null
-              andSequence:
-              - null
-              - null
-              and:
-              - null
-              - null
-              xone:
-              - null
-              - null
-          '@id': '@id'
-        '@id': '@id'
-        distribution:
-        - hasPolicy:
-          - obligation:
-            - action: null
-              constraint:
-              - null
-              - null
-            - action: null
-              constraint:
-              - null
-              - null
-            '@type': '@type'
-            profile:
-            - PolicyClass_profile
-            - PolicyClass_profile
-            prohibition:
-            - action: action
-              constraint:
-              - null
-              - null
-            - action: action
-              constraint:
-              - null
-              - null
-            permission:
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            '@id': '@id'
-          - obligation:
-            - action: null
-              constraint:
-              - null
-              - null
-            - action: null
-              constraint:
-              - null
-              - null
-            '@type': '@type'
-            profile:
-            - PolicyClass_profile
-            - PolicyClass_profile
-            prohibition:
-            - action: action
-              constraint:
-              - null
-              - null
-            - action: action
-              constraint:
-              - null
-              - null
-            permission:
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            '@id': '@id'
-          accessService: Distribution_accessService
-          format: format
-        - hasPolicy:
-          - obligation:
-            - action: null
-              constraint:
-              - null
-              - null
-            - action: null
-              constraint:
-              - null
-              - null
-            '@type': '@type'
-            profile:
-            - PolicyClass_profile
-            - PolicyClass_profile
-            prohibition:
-            - action: action
-              constraint:
-              - null
-              - null
-            - action: action
-              constraint:
-              - null
-              - null
-            permission:
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            '@id': '@id'
-          - obligation:
-            - action: null
-              constraint:
-              - null
-              - null
-            - action: null
-              constraint:
-              - null
-              - null
-            '@type': '@type'
-            profile:
-            - PolicyClass_profile
-            - PolicyClass_profile
-            prohibition:
-            - action: action
-              constraint:
-              - null
-              - null
-            - action: action
-              constraint:
-              - null
-              - null
-            permission:
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            - action: action
-              constraint:
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-              - or:
-                - null
-                - null
-                andSequence:
-                - null
-                - null
-                and:
-                - null
-                - null
-                xone:
-                - null
-                - null
-            '@id': '@id'
-          accessService: Distribution_accessService
-          format: format
-        '@context': {}
-      title: DatasetSchema
-      type: object
-    RootDataset:
-      allOf:
-      - $ref: "#/components/schemas/Dataset"
-      - properties:
-          '@context':
-            $ref: "#/components/schemas/context-schema_1"
-        required:
-        - '@context'
-        type: object
-        example: null
-      type: object
-      example: null
     TransferState:
       example:
+        '@context': {}
         state: state
-        '@context':
-        - '@context'
-        - '@context'
       properties:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -5872,28 +5869,6 @@ components:
       - '@context'
       - '@type'
       - state
-      type: object
-    transfer-suspend-schema:
-      allOf:
-      - $ref: "#/components/schemas/SuspendTransfer"
-      title: TransferSuspendSchema
-      type: object
-    SuspendTransfer:
-      properties:
-        '@context':
-          allOf:
-          - $ref: "#/components/schemas/ContextSchema"
-          items:
-            type: string
-          title: ContextSchema
-          type: array
-        '@type':
-          type: string
-        reason:
-          type: string
-      required:
-      - '@context'
-      - '@type'
       type: object
     PolicyEvaluationPlanSchemaV3:
       example:
@@ -5934,15 +5909,52 @@ components:
         policyScope:
           type: string
       type: object
+    transfer-suspend-schema:
+      allOf:
+      - $ref: "#/components/schemas/SuspendTransfer"
+      title: TransferSuspendSchema
+      type: object
+    SuspendTransfer:
+      properties:
+        '@context':
+          allOf:
+          - $ref: "#/components/schemas/ContextSchema"
+          example: {}
+          items:
+            type: string
+          title: ContextSchema
+          type: array
+        '@type':
+          type: string
+        reason:
+          type: string
+      required:
+      - '@context'
+      - '@type'
+      type: object
+    TerminateNegotiationV3:
+      example:
+        '@context':
+          '@vocab': https://w3id.org/edc/v0.0.1/ns/
+        '@type': https://w3id.org/edc/v0.0.1/ns/TerminateNegotiation
+        '@id': negotiation-id
+        reason: a reason to terminate
+      properties:
+        '@id':
+          type: string
+        '@type':
+          example: https://w3id.org/edc/v0.0.1/ns/TerminateNegotiation
+          type: string
+        reason:
+          type: string
+      type: object
     policy-validation-result-schema:
       allOf:
       - $ref: "#/components/schemas/PolicyValidationResult"
       example:
+        '@context': {}
         '@type': '@type'
         isValid: true
-        '@context':
-        - '@context'
-        - '@context'
         errors:
         - errors
         - errors
@@ -5953,6 +5965,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -5970,22 +5983,6 @@ components:
       - '@type'
       - errors
       - isValid
-      type: object
-    TerminateNegotiationV3:
-      example:
-        '@context':
-          '@vocab': https://w3id.org/edc/v0.0.1/ns/
-        '@type': https://w3id.org/edc/v0.0.1/ns/TerminateNegotiation
-        '@id': negotiation-id
-        reason: a reason to terminate
-      properties:
-        '@id':
-          type: string
-        '@type':
-          example: https://w3id.org/edc/v0.0.1/ns/TerminateNegotiation
-          type: string
-        reason:
-          type: string
       type: object
     DataPlaneInstanceSchemaV3:
       example:
@@ -6181,143 +6178,141 @@ components:
       allOf:
       - $ref: "#/components/schemas/PolicyEvaluationPlan"
       example:
+        '@context': {}
         '@type': '@type'
         preValidators:
         - preValidators
         - preValidators
-        permissionSteps:
-        - ruleFunctions:
-          - ruleFunctions
-          - ruleFunctions
-          filteringReasons:
-          - filteringReasons
-          - filteringReasons
-          '@type': '@type'
-          dutySteps:
-          - ruleFunctions:
-            - ruleFunctions
-            - ruleFunctions
-            filteringReasons:
-            - filteringReasons
-            - filteringReasons
-            '@type': '@type'
-            isFiltered: true
-            constraintSteps:
-            - null
-            - null
-          - ruleFunctions:
-            - ruleFunctions
-            - ruleFunctions
-            filteringReasons:
-            - filteringReasons
-            - filteringReasons
-            '@type': '@type'
-            isFiltered: true
-            constraintSteps:
-            - null
-            - null
-          isFiltered: true
-          constraintSteps:
-          - '@type': '@type'
-            constraintSteps:
-            - null
-            - null
-          - '@type': '@type'
-            constraintSteps:
-            - null
-            - null
-        - ruleFunctions:
-          - ruleFunctions
-          - ruleFunctions
-          filteringReasons:
-          - filteringReasons
-          - filteringReasons
-          '@type': '@type'
-          dutySteps:
-          - ruleFunctions:
-            - ruleFunctions
-            - ruleFunctions
-            filteringReasons:
-            - filteringReasons
-            - filteringReasons
-            '@type': '@type'
-            isFiltered: true
-            constraintSteps:
-            - null
-            - null
-          - ruleFunctions:
-            - ruleFunctions
-            - ruleFunctions
-            filteringReasons:
-            - filteringReasons
-            - filteringReasons
-            '@type': '@type'
-            isFiltered: true
-            constraintSteps:
-            - null
-            - null
-          isFiltered: true
-          constraintSteps:
-          - '@type': '@type'
-            constraintSteps:
-            - null
-            - null
-          - '@type': '@type'
-            constraintSteps:
-            - null
-            - null
-        dutySteps:
-        - ruleFunctions:
-          - ruleFunctions
-          - ruleFunctions
-          filteringReasons:
-          - filteringReasons
-          - filteringReasons
-          '@type': '@type'
-          isFiltered: true
-          constraintSteps:
-          - null
-          - null
-        - ruleFunctions:
-          - ruleFunctions
-          - ruleFunctions
-          filteringReasons:
-          - filteringReasons
-          - filteringReasons
-          '@type': '@type'
-          isFiltered: true
-          constraintSteps:
-          - null
-          - null
-        prohibitionSteps:
-        - ruleFunctions:
-          - ruleFunctions
-          - ruleFunctions
-          filteringReasons:
-          - filteringReasons
-          - filteringReasons
-          '@type': '@type'
-          isFiltered: true
-          constraintSteps:
-          - null
-          - null
-        - ruleFunctions:
-          - ruleFunctions
-          - ruleFunctions
-          filteringReasons:
-          - filteringReasons
-          - filteringReasons
-          '@type': '@type'
-          isFiltered: true
-          constraintSteps:
-          - null
-          - null
-        '@context':
-        - '@context'
-        - '@context'
         postValidators:
         - postValidators
         - postValidators
+        permissionSteps:
+        - isFiltered: true
+          filteringReasons:
+          - filteringReasons
+          - filteringReasons
+          constraintSteps:
+          - constraintSteps:
+            - null
+            - null
+            '@type': '@type'
+          - constraintSteps:
+            - null
+            - null
+            '@type': '@type'
+          ruleFunctions:
+          - ruleFunctions
+          - ruleFunctions
+          '@type': '@type'
+          dutySteps:
+          - isFiltered: true
+            filteringReasons:
+            - filteringReasons
+            - filteringReasons
+            constraintSteps:
+            - null
+            - null
+            ruleFunctions:
+            - ruleFunctions
+            - ruleFunctions
+            '@type': '@type'
+          - isFiltered: true
+            filteringReasons:
+            - filteringReasons
+            - filteringReasons
+            constraintSteps:
+            - null
+            - null
+            ruleFunctions:
+            - ruleFunctions
+            - ruleFunctions
+            '@type': '@type'
+        - isFiltered: true
+          filteringReasons:
+          - filteringReasons
+          - filteringReasons
+          constraintSteps:
+          - constraintSteps:
+            - null
+            - null
+            '@type': '@type'
+          - constraintSteps:
+            - null
+            - null
+            '@type': '@type'
+          ruleFunctions:
+          - ruleFunctions
+          - ruleFunctions
+          '@type': '@type'
+          dutySteps:
+          - isFiltered: true
+            filteringReasons:
+            - filteringReasons
+            - filteringReasons
+            constraintSteps:
+            - null
+            - null
+            ruleFunctions:
+            - ruleFunctions
+            - ruleFunctions
+            '@type': '@type'
+          - isFiltered: true
+            filteringReasons:
+            - filteringReasons
+            - filteringReasons
+            constraintSteps:
+            - null
+            - null
+            ruleFunctions:
+            - ruleFunctions
+            - ruleFunctions
+            '@type': '@type'
+        prohibitionSteps:
+        - isFiltered: true
+          filteringReasons:
+          - filteringReasons
+          - filteringReasons
+          constraintSteps:
+          - null
+          - null
+          ruleFunctions:
+          - ruleFunctions
+          - ruleFunctions
+          '@type': '@type'
+        - isFiltered: true
+          filteringReasons:
+          - filteringReasons
+          - filteringReasons
+          constraintSteps:
+          - null
+          - null
+          ruleFunctions:
+          - ruleFunctions
+          - ruleFunctions
+          '@type': '@type'
+        dutySteps:
+        - isFiltered: true
+          filteringReasons:
+          - filteringReasons
+          - filteringReasons
+          constraintSteps:
+          - null
+          - null
+          ruleFunctions:
+          - ruleFunctions
+          - ruleFunctions
+          '@type': '@type'
+        - isFiltered: true
+          filteringReasons:
+          - filteringReasons
+          - filteringReasons
+          constraintSteps:
+          - null
+          - null
+          ruleFunctions:
+          - ruleFunctions
+          - ruleFunctions
+          '@type': '@type'
       title: PolicyEvaluationPlanSchema
       type: object
     PolicyEvaluationPlan:
@@ -6325,6 +6320,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -6366,46 +6362,46 @@ components:
               $ref: "#/components/schemas/DutyStep"
             type: array
       example:
-        ruleFunctions:
-        - ruleFunctions
-        - ruleFunctions
+        isFiltered: true
         filteringReasons:
         - filteringReasons
         - filteringReasons
+        constraintSteps:
+        - constraintSteps:
+          - null
+          - null
+          '@type': '@type'
+        - constraintSteps:
+          - null
+          - null
+          '@type': '@type'
+        ruleFunctions:
+        - ruleFunctions
+        - ruleFunctions
         '@type': '@type'
         dutySteps:
-        - ruleFunctions:
-          - ruleFunctions
-          - ruleFunctions
+        - isFiltered: true
           filteringReasons:
           - filteringReasons
           - filteringReasons
-          '@type': '@type'
-          isFiltered: true
           constraintSteps:
           - null
           - null
-        - ruleFunctions:
+          ruleFunctions:
           - ruleFunctions
           - ruleFunctions
+          '@type': '@type'
+        - isFiltered: true
           filteringReasons:
           - filteringReasons
           - filteringReasons
+          constraintSteps:
+          - null
+          - null
+          ruleFunctions:
+          - ruleFunctions
+          - ruleFunctions
           '@type': '@type'
-          isFiltered: true
-          constraintSteps:
-          - null
-          - null
-        isFiltered: true
-        constraintSteps:
-        - '@type': '@type'
-          constraintSteps:
-          - null
-          - null
-        - '@type': '@type'
-          constraintSteps:
-          - null
-          - null
       required:
       - '@type'
       type: object
@@ -6439,10 +6435,10 @@ components:
           '@type':
             type: string
       example:
-        '@type': '@type'
         constraintSteps:
         - null
         - null
+        '@type': '@type'
       required:
       - '@type'
       type: object
@@ -6499,17 +6495,17 @@ components:
           '@type':
             type: string
       example:
-        ruleFunctions:
-        - ruleFunctions
-        - ruleFunctions
+        isFiltered: true
         filteringReasons:
         - filteringReasons
         - filteringReasons
-        '@type': '@type'
-        isFiltered: true
         constraintSteps:
         - null
         - null
+        ruleFunctions:
+        - ruleFunctions
+        - ruleFunctions
+        '@type': '@type'
       required:
       - '@type'
       type: object
@@ -6520,17 +6516,17 @@ components:
           '@type':
             type: string
       example:
-        ruleFunctions:
-        - ruleFunctions
-        - ruleFunctions
+        isFiltered: true
         filteringReasons:
         - filteringReasons
         - filteringReasons
-        '@type': '@type'
-        isFiltered: true
         constraintSteps:
         - null
         - null
+        ruleFunctions:
+        - ruleFunctions
+        - ruleFunctions
+        '@type': '@type'
       required:
       - '@type'
       type: object
@@ -6544,6 +6540,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -6636,6 +6633,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
@@ -6775,6 +6773,7 @@ components:
         '@context':
           allOf:
           - $ref: "#/components/schemas/ContextSchema"
+          example: {}
           items:
             type: string
           title: ContextSchema
